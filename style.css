@@ -44,8 +44,8 @@ label {
     margin-top: 10px;
 }
 
-input[type="text"],
-input[type="file"] {
+#studentInfo input[type="text"],
+#studentInfo input[type="file"] {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -55,7 +55,17 @@ input[type="file"] {
     font-size: 16px;
 }
 
-/* Buttons */
+#studentInfo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+#studentInfo label {
+    display: block;
+    margin-top: 10px;
+}
+
 button {
     background-color: #007bff;
     color: white;
