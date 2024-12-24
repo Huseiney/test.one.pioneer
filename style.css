@@ -1,26 +1,74 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    animation: fadeIn 2s;
 }
 
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Quiz Container */
 .quiz-container {
     width: 90%;
     max-width: 700px;
-    margin: 20px auto;
+    background: #ffffff;
+    color: #333;
     padding: 20px;
-    background: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-50px);
+    animation: slideIn 1s forwards;
 }
 
-h1 {
+@keyframes slideIn {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Logo */
+.logo-container {
     text-align: center;
     margin-bottom: 20px;
 }
 
+.logo {
+    width: 120px;
+    height: auto;
+    border-radius: 50%;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Form Elements */
 form {
     margin-bottom: 20px;
 }
@@ -29,39 +77,30 @@ form {
     margin-bottom: 15px;
 }
 
-.hidden {
-    display: none;
-}
-
 button {
     display: block;
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    background: #007bff;
     color: #fff;
+    background: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 button:hover {
     background: #0056b3;
 }
 
+/* Hidden Elements */
+.hidden {
+    display: none;
+}
+
 #result {
     margin-top: 20px;
     text-align: center;
     font-size: 18px;
-}
-/* Add styles for the logo */
-.logo-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.logo {
-    width: 150px;
-    height: auto;
-    border-radius: 50%;
 }
