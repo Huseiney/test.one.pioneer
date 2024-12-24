@@ -1,18 +1,115 @@
-/* General Styles */
+/* General Reset */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    animation: fadeIn 2s;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
 }
 
-/* Animation */
+/* Container */
+.quiz-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Logo Styling */
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 150px;
+    animation: slideInDown 1s ease-in-out;
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #007bff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Form Elements */
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+input[type="text"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #004494;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none;
+}
+
+/* Question Styling */
+.question {
+    margin-bottom: 20px;
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+.question p {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.question label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+/* Result Section */
+#result {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -22,22 +119,9 @@ body {
     }
 }
 
-/* Quiz Container */
-.quiz-container {
-    width: 90%;
-    max-width: 700px;
-    background: #ffffff;
-    color: #333;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    transform: translateY(-50px);
-    animation: slideIn 1s forwards;
-}
-
-@keyframes slideIn {
+@keyframes slideInDown {
     from {
-        transform: translateY(-100px);
+        transform: translateY(-50px);
         opacity: 0;
     }
     to {
@@ -46,61 +130,30 @@ body {
     }
 }
 
-/* Logo */
-.logo-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.logo {
-    width: 120px;
-    height: auto;
-    border-radius: 50%;
-    animation: bounce 1.5s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% {
+@keyframes fadeInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
         transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
+        opacity: 1;
     }
 }
 
-/* Form Elements */
-form {
-    margin-bottom: 20px;
-}
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .quiz-container {
+        margin: 20px;
+        padding: 15px;
+    }
 
-.question {
-    margin-bottom: 15px;
-}
+    h1 {
+        font-size: 20px;
+    }
 
-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    color: #fff;
-    background: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-button:hover {
-    background: #0056b3;
-}
-
-/* Hidden Elements */
-.hidden {
-    display: none;
-}
-
-#result {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 18px;
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
 }
