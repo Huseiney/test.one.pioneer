@@ -100,5 +100,5 @@ document.getElementById("submitQuiz").addEventListener("click", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ chat_id: chatId, text: message }),
-    }).then(() => alert("Results sent to Telegram!"));
+    }).then(() => alert("Your result has been saved in our system."));
 });
