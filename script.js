@@ -22,7 +22,6 @@ const studentInfo = document.getElementById("studentInfo");
 const quizForm = document.getElementById("quizForm");
 const startQuizButton = document.getElementById("startQuiz");
 const submitQuizButton = document.getElementById("submitQuiz");
-const downloadResultButton = document.getElementById("downloadResult");
 const resultDiv = document.getElementById("result");
 
 // Start Quiz
@@ -80,51 +79,26 @@ submitQuizButton.addEventListener("click", () => {
     resultDiv.classList.remove("hidden");
     resultDiv.innerHTML = `You scored ${score}/${questions.length}. Status: ${passFail}.`;
 
-    downloadResultButton.classList.remove("hidden");
-
     // Send Data to Telegram
     reader.onload = () => {
-        const photoBase64 = reader.result; // base64-encoded photo
-        const telegramMessage = `
-            *Pioneer Crypto Academy Quiz Results*
+        const photoBase64 = reader.result.split(',')[1]; // Extract base64
+        const telegramApiUrl = `https://api.telegram.org/bot<8174835485:AAF4vGGDqIqKQvVyNrS2EfpbSuo5yhcY2Yo>/sendPhoto`;
+        const message = `
             Name: ${name}
-            Score: ${score}/${questions.length} (${passFail})
-            ${detailedResult.map(r => `
-                Question: ${r.question}
-                Correct Answer: ${r.correct}
-                Your Answer: ${r.yourAnswer}
-                Status: ${r.isCorrect ? "Correct" : "Incorrect"}
-            `).join("\n")}
+            Score: ${score}/${questions.length}
+            Status: ${passFail}
         `;
-        
-        const telegramApiUrl = `https://api.telegram.org/bot8174835485:AAF4vGGDqIqKQvVyNrS2EfpbSuo5yhcY2Yo/sendMessage`;
+
         fetch(telegramApiUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                chat_id: 7361816575,
-                text: telegramMessage,
+                chat_id: "<7361816575>",
+                photo: photoBase64,
+                caption: message,
                 parse_mode: 'Markdown',
             }),
-        });
-
-        // Generate PDF
-        downloadResultButton.addEventListener("click", () => {
-            const resultText = detailedResult.map(r => `
-                Question: ${r.question}
-                Correct Answer: ${r.correct}
-                Your Answer: ${r.yourAnswer}
-                Status: ${r.isCorrect ? "Correct" : "Incorrect"}
-            `).join("\n");
-
-            const doc = new jsPDF();
-            doc.text(`Pioneer Crypto Academy Quiz Results`, 10, 10);
-            doc.text(`Name: ${name}`, 10, 20);
-            doc.addImage(photoBase64, "JPEG", 150, 10, 40, 40); // Photo
-            doc.text(`Score: ${score}/${questions.length} (${passFail})`, 10, 60);
-            doc.text(resultText, 10, 70);
-            doc.save("quiz-results.pdf");
-        });
+            headers: { 'Content-Type': 'application/json' },
+        }).then(() => alert("We have successfully received your result!"));
     };
 
     reader.readAsDataURL(photo);
