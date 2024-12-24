@@ -82,8 +82,33 @@ submitQuizButton.addEventListener("click", () => {
 
     downloadResultButton.classList.remove("hidden");
 
-    // Generate PDF
+    // Send Data to Telegram
     reader.onload = () => {
+        const photoBase64 = reader.result; // base64-encoded photo
+        const telegramMessage = `
+            *Pioneer Crypto Academy Quiz Results*
+            Name: ${name}
+            Score: ${score}/${questions.length} (${passFail})
+            ${detailedResult.map(r => `
+                Question: ${r.question}
+                Correct Answer: ${r.correct}
+                Your Answer: ${r.yourAnswer}
+                Status: ${r.isCorrect ? "Correct" : "Incorrect"}
+            `).join("\n")}
+        `;
+        
+        const telegramApiUrl = `https://api.telegram.org/bot8174835485:AAF4vGGDqIqKQvVyNrS2EfpbSuo5yhcY2Yo/sendMessage`;
+        fetch(telegramApiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: 7361816575,
+                text: telegramMessage,
+                parse_mode: 'Markdown',
+            }),
+        });
+
+        // Generate PDF
         downloadResultButton.addEventListener("click", () => {
             const resultText = detailedResult.map(r => `
                 Question: ${r.question}
@@ -95,7 +120,7 @@ submitQuizButton.addEventListener("click", () => {
             const doc = new jsPDF();
             doc.text(`Pioneer Crypto Academy Quiz Results`, 10, 10);
             doc.text(`Name: ${name}`, 10, 20);
-            doc.addImage(reader.result, "JPEG", 150, 10, 40, 40); // Photo
+            doc.addImage(photoBase64, "JPEG", 150, 10, 40, 40); // Photo
             doc.text(`Score: ${score}/${questions.length} (${passFail})`, 10, 60);
             doc.text(resultText, 10, 70);
             doc.save("quiz-results.pdf");
