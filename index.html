@@ -14,15 +14,28 @@
         </div>
 
         <h1>Pioneer Crypto Academy Quiz</h1>
-        <form id="quizForm">
+
+        <!-- Student Info Form -->
+        <div id="studentInfo">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" placeholder="Enter your full name" required>
+
+            <label for="photo">Upload Photo:</label>
+            <input type="file" id="photo" accept="image/*" required>
+
+            <button id="startQuiz">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Form -->
+        <form id="quizForm" class="hidden">
             <!-- Questions will be dynamically added here -->
         </form>
-        <button id="submitQuiz">Submit</button>
+
+        <button id="submitQuiz" class="hidden">Submit</button>
         <button id="downloadResult" class="hidden">Download Result</button>
         <div id="result" class="hidden"></div>
     </div>
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
 </body>
 </html>
