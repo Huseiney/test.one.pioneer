@@ -17,27 +17,51 @@ const questions = [
     { q: "What is liquidity?", choices: ["Market asset availability", "Coin", "Token", "DEX"], correct: 0 },
 ];
 
-// Render Questions
-const form = document.getElementById("quizForm");
+// DOM Elements
+const studentInfo = document.getElementById("studentInfo");
+const quizForm = document.getElementById("quizForm");
+const startQuizButton = document.getElementById("startQuiz");
+const submitQuizButton = document.getElementById("submitQuiz");
+const downloadResultButton = document.getElementById("downloadResult");
+const resultDiv = document.getElementById("result");
 
-questions.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.className = "question";
-    div.innerHTML = `
-        <p>${index + 1}. ${item.q}</p>
-        ${item.choices.map((choice, i) => `
-            <label>
-                <input type="radio" name="q${index}" value="${i}" required> ${choice}
-            </label><br>
-        `).join("")}
-    `;
-    form.appendChild(div);
+// Start Quiz
+startQuizButton.addEventListener("click", () => {
+    const name = document.getElementById("name").value.trim();
+    const photo = document.getElementById("photo").files[0];
+
+    if (!name || !photo) {
+        alert("Please enter your name and upload a photo.");
+        return;
+    }
+
+    studentInfo.classList.add("hidden");
+    quizForm.classList.remove("hidden");
+    submitQuizButton.classList.remove("hidden");
+
+    // Render Questions
+    questions.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `
+            <p>${index + 1}. ${item.q}</p>
+            ${item.choices.map((choice, i) => `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}" required> ${choice}
+                </label><br>
+            `).join("")}
+        `;
+        quizForm.appendChild(div);
+    });
 });
 
-// Quiz Submission Logic (unchanged)
-document.getElementById("submitQuiz").addEventListener("click", () => {
-    const resultDiv = document.getElementById("result");
-    const formData = new FormData(form);
+// Submit Quiz
+submitQuizButton.addEventListener("click", () => {
+    const name = document.getElementById("name").value.trim();
+    const photo = document.getElementById("photo").files[0];
+    const reader = new FileReader();
+
+    const formData = new FormData(quizForm);
     let score = 0;
 
     const answers = Array.from(formData.entries()).map(([key, value]) => parseInt(value));
@@ -52,53 +76,31 @@ document.getElementById("submitQuiz").addEventListener("click", () => {
         };
     });
 
-    // Display Result
     const passFail = score >= (questions.length / 2) ? "PASS" : "FAIL";
     resultDiv.classList.remove("hidden");
     resultDiv.innerHTML = `You scored ${score}/${questions.length}. Status: ${passFail}.`;
 
-    // Enable Download Button
-    const downloadBtn = document.getElementById("downloadResult");
-    downloadBtn.classList.remove("hidden");
+    downloadResultButton.classList.remove("hidden");
 
-    // Download Result as PDF
-    downloadBtn.addEventListener("click", () => {
-        const resultText = detailedResult.map(r => `
-            Question: ${r.question}
-            Correct Answer: ${r.correct}
-            Your Answer: ${r.yourAnswer}
-            Status: ${r.isCorrect ? "Correct" : "Incorrect"}
-        `).join("\n");
+    // Generate PDF
+    reader.onload = () => {
+        downloadResultButton.addEventListener("click", () => {
+            const resultText = detailedResult.map(r => `
+                Question: ${r.question}
+                Correct Answer: ${r.correct}
+                Your Answer: ${r.yourAnswer}
+                Status: ${r.isCorrect ? "Correct" : "Incorrect"}
+            `).join("\n");
 
-        const doc = new jsPDF();
-        doc.text(`Pioneer Crypto Academy Quiz Results`, 10, 10);
-        doc.text(`Score: ${score}/${questions.length} (${passFail})`, 10, 20);
-        doc.text(resultText, 10, 30);
-        doc.save("quiz-results.pdf");
-    });
+            const doc = new jsPDF();
+            doc.text(`Pioneer Crypto Academy Quiz Results`, 10, 10);
+            doc.text(`Name: ${name}`, 10, 20);
+            doc.addImage(reader.result, "JPEG", 150, 10, 40, 40); // Photo
+            doc.text(`Score: ${score}/${questions.length} (${passFail})`, 10, 60);
+            doc.text(resultText, 10, 70);
+            doc.save("quiz-results.pdf");
+        });
+    };
 
-    // Send Results to Telegram
-    const botId = "7361816575";
-    const botToken = "8174835485:AAF4vGGDqIqKQvVyNrS2EfpbSuo5yhcY2Yo";
-    const chatId = botId;
-
-    const resultMessage = detailedResult.map(r => `
-        Question: ${r.question}
-        Correct Answer: ${r.correct}
-        Your Answer: ${r.yourAnswer}
-        Status: ${r.isCorrect ? "Correct" : "Incorrect"}
-    `).join("\n");
-
-    const message = `
-        Name: [Student Name]
-        Phone: [Phone Number]
-        Result: ${score}/${questions.length}
-        ${resultMessage}
-    `;
-
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text: message }),
-    }).then(() => alert("Your result has been saved in our system."));
+    reader.readAsDataURL(photo);
 });
