@@ -2,12 +2,24 @@
 const questions = [
     { q: "Define cryptocurrency", choices: ["Digital currency", "Physical money", "Paper money", "Credit"], correct: 0 },
     { q: "Define a coin", choices: ["Blockchain asset", "Token", "Blockchain", "Contract"], correct: 0 },
-    // Add remaining questions here...
+    { q: "Define a token", choices: ["Utility on a blockchain", "A coin", "Blockchain", "Smart contract"], correct: 0 },
+    { q: "Define Blockchain", choices: ["Decentralized ledger", "Token", "Coin", "Contract"], correct: 0 },
+    { q: "What is a smart contract?", choices: ["Self-executing agreement", "Token", "Blockchain", "Wallet"], correct: 0 },
+    { q: "Define CEX", choices: ["Centralized Exchange", "Coin Exchange", "Contract Exchange", "Crypto Exchange"], correct: 0 },
+    { q: "Define DEX", choices: ["Decentralized Exchange", "Digital Exchange", "Direct Exchange", "Decentralized Wallet"], correct: 0 },
+    { q: "Explain Testnet", choices: ["Blockchain testing network", "Main blockchain", "Smart contract", "Wallet"], correct: 0 },
+    { q: "Explain Mainnet", choices: ["Live blockchain", "Testing blockchain", "Coin", "Token"], correct: 0 },
+    { q: "Explain Spot trading", choices: ["Immediate trading", "Futures trading", "Blockchain trading", "Wallet trading"], correct: 0 },
+    { q: "What is USDT?", choices: ["Stablecoin", "Coin", "Token", "Smart contract"], correct: 0 },
+    { q: "What is an Explorer?", choices: ["Blockchain tracker", "Wallet", "Contract", "DEX"], correct: 0 },
+    { q: "What is Slippage tolerance?", choices: ["Price difference allowance", "Token value", "Wallet fee", "Coin change"], correct: 0 },
+    { q: "What is ERC20?", choices: ["Ethereum token standard", "Blockchain", "DEX", "Smart contract"], correct: 0 },
+    { q: "What is liquidity?", choices: ["Market asset availability", "Coin", "Token", "DEX"], correct: 0 },
 ];
 
+// Render Questions
 const form = document.getElementById("quizForm");
 
-// Render Questions
 questions.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "question";
@@ -22,7 +34,7 @@ questions.forEach((item, index) => {
     form.appendChild(div);
 });
 
-// Handle Quiz Submission
+// Quiz Submission Logic (unchanged)
 document.getElementById("submitQuiz").addEventListener("click", () => {
     const resultDiv = document.getElementById("result");
     const formData = new FormData(form);
